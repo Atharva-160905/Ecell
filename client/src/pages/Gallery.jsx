@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { X, Instagram, ExternalLink, Camera } from 'lucide-react';
-import { galleryData } from '../data/galleryData';
+import { galleryData } from '../data/GalleryData';
 
 
 // ============================================
@@ -62,7 +62,7 @@ const Lightbox = ({ photo, onClose }) => {
       className="fixed inset-0 bg-[#000000]/95 z-50 flex items-center justify-center p-4 backdrop-blur-sm"
       onClick={onClose}
     >
-      {/* Close Button */}
+     
       <button
         onClick={onClose}
         className="absolute top-6 right-6 bg-[#434343] hover:bg-[#434343]/80 p-3 rounded-full transition-all duration-300 hover:scale-110 z-10 border border-[#434343]/50"
@@ -70,7 +70,7 @@ const Lightbox = ({ photo, onClose }) => {
         <X size={24} className="text-white" />
       </button>
 
-      {/* Image */}
+     
       <img
         src={photo}
         alt="Gallery"

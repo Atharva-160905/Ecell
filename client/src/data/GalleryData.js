@@ -1,7 +1,5 @@
-// src/data/galleryData.js
 
-
-const imageCount = 13; // 
+const imageCount = 19; // 
 
 const photos = Array.from({ length: imageCount }, (_, i) => 
   `/gallery/${i + 1}.JPG`
