@@ -1,60 +1,51 @@
+import { useState, useEffect } from "react";
 import { BrowserRouter, Routes, Route, useLocation } from "react-router-dom";
-import { AnimatePresence, motion } from "framer-motion";
-
+import StartupLoader from "./components/Loader";
 import Navbar from "./components/Navbar";
 import Footer from "./components/Footer";
 
 import Home from "./pages/Home";
-import Events from "./pages/Events";
-import UpcomingEvent from "./pages/UpcomingEvent";
-import Guests from "./pages/Guests";
 import Team from "./pages/Team";
-import Faculty from "./pages/Faculty";
+
+import Eachevent from "./pages/Eachevent";
+import Gallery from "./pages/Gallery";
 import Contact from "./pages/Contact";
-import Admin from "./pages/Admin";
 
-function AnimatedRoutes() {
-  const location = useLocation();
+// Component to scroll to top on route change
+function ScrollToTop() {
+  const { pathname } = useLocation();
 
-  return (
-    <AnimatePresence mode="wait">
-      <motion.div
-        key={location.pathname}
-        initial={{ opacity: 0, y: 20 }}
-        animate={{ opacity: 1, y: 0 }}
-        exit={{ opacity: 0, y: -20 }}
-        transition={{ duration: 0.35 }}
-      >
-        <Routes location={location}>
-          <Route path="/" element={<Home />} />
-          <Route path="/events" element={<Events />} />
-          <Route path="/upcoming-event" element={<UpcomingEvent />} />
-          <Route path="/guests" element={<Guests />} />
-          <Route path="/team" element={<Team />} />
-          <Route path="/faculty" element={<Faculty />} />
-          <Route path="/contact" element={<Contact />} />
-        </Routes>
-      </motion.div>
-    </AnimatePresence>
-  );
+  useEffect(() => {
+    window.scrollTo(0, 0);
+  }, [pathname]);
+
+  return null;
 }
 
 function App() {
+  const [loading, setLoading] = useState(true);
+
   return (
-    <BrowserRouter>
-      <Navbar />
+    <div className="bg-[#213448] min-h-screen">
+      {loading && <StartupLoader onComplete={() => setLoading(false)} />}
 
-      <div className="pt-20">
-        <AnimatedRoutes />
-
-        {/* ADMIN ROUTE OUTSIDE ANIMATED ROUTES */}
-        <Routes>
-          <Route path="/admin" element={<Admin />} />
-        </Routes>
-      </div>
-
-      <Footer />
-    </BrowserRouter>
+      {!loading && (
+        <BrowserRouter>
+          <ScrollToTop />
+          <Navbar />
+          <div className="min-h-screen">
+            <Routes>
+              <Route path="/" element={<Home />} />
+              <Route path="/Eachevent/:slug" element={<Eachevent />} />
+              <Route path="/Team"  element={<Team/>}/>
+              <Route path="/Gallery" element={<Gallery/>}/>
+              <Route path="/contact" element={<Contact/>}/>
+            </Routes>
+          </div>
+          <Footer />
+        </BrowserRouter>
+      )}
+    </div>
   );
 }
 

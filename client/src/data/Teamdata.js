@@ -1,0 +1,201 @@
+// src/data/teamData.js
+// Simple structure like IIC E-Cell SKNCOE
+import tanishq from "../assets/core-members/tanishq shroff.jpg";
+import anjali from "../assets/core-members/anjali kumhar.jpg";
+import ghuge from "../assets/core-members/Shivam ghuge.jpg";
+import yukta from "../assets/core-members/Yukta Patil.jpg";
+import dhruv from "../assets/core-members/DHRUV UNHALE.jpg";
+import jayesh from "../assets/core-members/jayesh jadhav.jpg"
+import neel from "../assets/core-members/Neel Rawal.jpeg";
+import ram from "../assets/core-members/Ram Burange.jpg";
+import vedika from "../assets/core-members/Vedika Kharate.jpg";
+import aryan from "../assets/core-members/Aryan Agrawal.jpg";
+import ragini from "../assets/core-members/Ragini Devkar.jpg";
+import vinit from "../assets/core-members/Vinit Limkar.jpg";
+import rajshri from "../assets/core-members/Rajshri Dhage.jpg";
+import shyam from "../assets/core-members/Shyam.jpg";
+import kaushal from "../assets/core-members/kaushal Masare.jpg";
+import shubh from "../assets/core-members/Shubham Sharma.jpg";
+import shantanu from "../assets/core-members/Shantanu Mapre.jpg";
+import ketan from "../assets/core-members/Ketan patil.jpg";
+import vedant from "../assets/core-members/Vedant Satpute.jpg";
+import rutu from "../assets/core-members/Rutuja Yelgate.jpg";
+export const teamData = {
+  // Faculty/Mentors
+  faculty: [
+    {
+      id: 1,
+      name: "Dr. Rajesh Kumar",
+      position: "Faculty Coordinator",
+      image: "https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?w=400&q=80",
+      linkedin: "https://linkedin.com/in/rajeshkumar"
+    },
+    {
+      id: 2,
+      name: "Prof. Priya Sharma",
+      position: "Innovation Mentor",
+      image: "https://images.unsplash.com/photo-1494790108377-be9c29b29330?w=400&q=80",
+      linkedin: "https://linkedin.com/in/priyasharma"
+    },
+    {
+      id: 3,
+      name: "Dr. Rajesh Kumar",
+      position: "Faculty Coordinator",
+      image: "https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?w=400&q=80",
+      linkedin: "https://linkedin.com/in/rajeshkumar"
+    }
+  ],
+
+  // Core Team Members
+  coreTeam: [
+    {
+      id: 1,
+      name: "Tanishq Shroff",
+      position: "President",
+      image: tanishq,
+      linkedin: "https://www.linkedin.com/in/tanishqshroff/"
+    },
+    {
+      id: 2,
+      name: "Anjali Kumhar",
+      position: "Vice President",
+      image:anjali,
+      linkedin: "https://linkedin.com/in/snehapatel"
+    },
+    {
+      id: 3,
+      name: "Shivam Ghuge",
+      position: "General secretary",
+      image: ghuge,
+      linkedin: "https://linkedin.com/in/rahulverma"
+    },
+    {
+      id: 4,
+      name: "Shantanu Mapare",
+      position: "Cheif of operation",
+      image: shantanu,
+      linkedin: "https://linkedin.com/in/ananyasingh"
+    },
+    {
+      id: 5,
+      name: "Ram Burange",
+      position: "Tresurer",
+      image:ram,
+      linkedin: "https://linkedin.com/in/vikramjoshi"
+    },
+     {
+      id: 6,
+      name: "Shubham Sharma",
+      position: "Tresurer",
+      image: shubh,
+      linkedin: "https://linkedin.com/in/ananyasingh"
+    },
+    {
+      id: 7,
+      name: "Yukta Patil",
+      position: "PR Head",
+      image: yukta,
+      linkedin: "https://linkedin.com/in/riyakapoor"
+    },
+    {
+      id: 8,
+      name: "Dhruv Unhale",
+      position: "PR Head",
+      image: dhruv,
+      linkedin: "https://linkedin.com/in/riyakapoor"
+    },
+    {
+      id:9,
+      name: "Jayesh Jadhav",
+      position: "PR Head",
+      image: jayesh,
+      linkedin: "https://linkedin.com/in/riyakapoor"
+    },
+    {
+      id: 10,
+      name: "Neel Rawal",
+      position: "Start-up Incubation Head",
+      image: neel,
+      linkedin: "https://linkedin.com/in/riyakapoor"
+    },
+    {
+      id: 11,
+      name: "Rutuja Yelgate",
+      position: "Sponsorship Head",
+      image: rutu,
+      linkedin: "https://linkedin.com/in/riyakapoor"
+    },
+    
+    {
+      id: 12,
+      name: "Rajshri Dhage",
+      position: "Sponsorship Head",
+      image:rajshri,
+      linkedin: "https://linkedin.com/in/riyakapoor"
+    },
+    {
+      id: 13,
+      name: "Vedika Kharate",
+      position: "Sponsorship Head",
+      image:vedika,
+      linkedin: "https://linkedin.com/in/riyakapoor"
+    }
+    ,{
+      id: 14,
+      name: "Ketan Patil",
+      position: "Digital Media Head",
+      image: ketan,
+      linkedin: "https://linkedin.com/in/riyakapoor"
+    },{
+      id: 15,
+      name: "Aryan Agarwal",
+      position: "Digital Media Head",
+      image:aryan,
+      linkedin: "https://linkedin.com/in/riyakapoor"
+    },{
+      id: 16,
+      name: "Ragini Devkar",
+      position: "Administrative Affairs Head",
+      image:ragini ,
+      linkedin: "https://linkedin.com/in/riyakapoor"
+    },{
+      id: 17,
+      name: "Vedant Satpute",
+      position: "Technical Head",
+      image: vedant,
+      linkedin: "https://linkedin.com/in/riyakapoor"
+    },{
+      id: 18,
+      name: "Shyam Talekar",
+      position: "Technical Head",
+      image: shyam,
+      linkedin: "https://linkedin.com/in/riyakapoor"
+    },{
+      id: 19,
+      name: "Vinit Limkar",
+      position: "Technical Head",
+      image: vinit,
+      linkedin: "https://linkedin.com/in/riyakapoor"
+    },{
+      id: 20,
+      name: "kaushal Masare",
+      position: "Technical Head",
+      image:kaushal,
+      linkedin: "https://linkedin.com/in/riyakapoor"
+    }
+  ],
+
+  
+};
+
+// Helper functions
+export const getAllMembers = () => {
+  return {
+    faculty: teamData.faculty,
+    coreTeam: teamData.coreTeam,
+   
+  };
+};
+
+export const getCoreTeam = () => teamData.coreTeam;
+export const getFaculty = () => teamData.faculty;

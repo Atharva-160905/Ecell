@@ -1,110 +1,209 @@
-import { useEffect, useState } from "react";
-import axios from "axios";
+import React, { useState, useEffect } from 'react';
+import { Linkedin, Users } from 'lucide-react';
+import { Helmet } from 'react-helmet-async';
+import { teamData } from '../data/Teamdata';
 
-import { Card } from "@/components/ui/card";
-import { Avatar } from "@/components/ui/avatar";
-import { Linkedin, Instagram, Github } from "lucide-react";
-import { motion } from "framer-motion";
-import Skeleton from "@/components/Skeleton";
-
-export default function Team() {
-  const [teamMembers, setTeamMembers] = useState([]);
-  const [loading, setLoading] = useState(true);
+// ============================================
+// Simple Team Member Card (IIC Style)
+// Clean card with: Image → Name → Position → LinkedIn
+// ============================================
+const TeamMemberCard = ({ member, index }) => {
+  const [isVisible, setIsVisible] = useState(false);
+  const [isHovered, setIsHovered] = useState(false);
 
   useEffect(() => {
-    axios
-      .get("http://localhost:5000/api/team")
-      .then((res) => {
-        setTeamMembers(res.data);
-        setLoading(false);
-      })
-      .catch((err) => console.log(err));
+    const timer = setTimeout(() => setIsVisible(true), index * 100);
+    return () => clearTimeout(timer);
+  }, [index]);
+
+  return (
+    <div
+      onMouseEnter={() => setIsHovered(true)}
+      onMouseLeave={() => setIsHovered(false)}
+      className={`bg-gradient-to-br from-[#1a1a1a] to-[#0a0a0a] border border-[#434343]/30 rounded-2xl overflow-hidden hover:border-[#434343]/60 transition-all duration-500 hover:scale-105 ${
+        isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-10'
+      }`}
+    >
+      {/* Image with Hover Overlay */}
+      <div className="relative h-64 overflow-hidden group">
+        <img
+          src={member.image}
+          alt={member.name}
+          className={`w-full h-full object-cover object-center transition-all duration-700 ${
+            isHovered ? 'scale-110' : 'scale-100'
+          }`}
+        />
+        <div className="absolute inset-0 bg-gradient-to-t from-[#000000] via-[#000000]/30 to-transparent"></div>
+        
+        {/* Social Icons Overlay - Shows on Hover */}
+        <div
+          className={`absolute inset-0 bg-[#000000]/80 backdrop-blur-sm flex items-center justify-center gap-4 transition-all duration-300 ${
+            isHovered ? 'opacity-100' : 'opacity-0 pointer-events-none'
+          }`}
+        >
+          <a
+            href={member.linkedin}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="bg-[#434343] hover:bg-[#434343]/80 p-3 rounded-full transition-all duration-300 hover:scale-110"
+            onClick={(e) => e.stopPropagation()}
+          >
+            <Linkedin size={20} className="text-white" />
+          </a>
+        </div>
+      </div>
+
+      {/* Content */}
+      <div className="p-5 text-center">
+        <h3 className="text-lg font-bold text-white mb-1 line-clamp-1">
+          {member.name}
+        </h3>
+        <p className="text-gray-400 text-sm line-clamp-2">
+          {member.position}
+        </p>
+      </div>
+    </div>
+  );
+};
+
+// ============================================
+// Section Header Component
+// ============================================
+const SectionHeader = ({ title }) => {
+  return (
+    <div className="text-center mb-12">
+      <h2 className="text-3xl md:text-4xl font-bold text-white mb-4">
+        {title}
+      </h2>
+      <div className="h-1 w-24 bg-[#434343] mx-auto rounded-full"></div>
+    </div>
+  );
+};
+
+// ============================================
+// MAIN TEAM PAGE COMPONENT
+// ============================================
+export default function Team() {
+  const [isVisible, setIsVisible] = useState(false);
+
+  useEffect(() => {
+    setIsVisible(true);
   }, []);
 
   return (
-    <div className="min-h-screen bg-[#0a0a0a] text-white pt-32 px-6">
-      <div className="max-w-7xl mx-auto text-center">
-        {/* Heading */}
-        <h2 className="text-4xl font-bold">
-          Our <span className="text-[#00eaff]">Team</span>
-        </h2>
+    <div
+      className="min-h-screen"
+      style={{ background: 'linear-gradient(180deg, #000000 0%, #434343 100%)' }}
+    >
+      {/* ===== HELMET FOR SEO ===== */}
+      <Helmet>
+        <title>Our Team | E-Cell SKNCOE</title>
+        <meta
+          name="description"
+          content="Meet the passionate faculty coordinators and core team members of E-Cell SKNCOE who drive innovation, entrepreneurship, and student leadership."
+        />
+        <meta name="keywords" content="E-Cell SKNCOE Team, E-Cell Members, Entrepreneurship Cell SKNCOE" />
+      </Helmet>
 
-        <p className="text-gray-400 mt-4 max-w-2xl mx-auto">
-          Meet the passionate individuals behind our Entrepreneurship Cell —
-          innovators, leaders, designers, and creators.
-        </p>
-
-        {/* Team Grid */}
-        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-10 mt-16">
-          {/* ⭐ Skeleton Loading */}
-          {loading &&
-            [...Array(8)].map((_, index) => (
-              <Skeleton
-                key={index}
-                className="h-64 w-full rounded-xl bg-white/10"
-              />
-            ))}
-
-          {/* ⭐ Actual Data */}
-          {!loading &&
-            teamMembers.map((member, index) => (
-              <motion.div
-                key={member._id}
-                initial={{ opacity: 0, y: 50 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.5, delay: index * 0.1 }}
-              >
-                <Card className="p-6 bg-[#0f0f0f]/80 border-white/10 hover:border-[#00eaff] hover:shadow-[#00eaff55] transition-all rounded-xl text-center">
-                  {/* Avatar */}
-                  <div className="flex justify-center">
-                    <Avatar
-                      src={member.image}
-                      alt={member.name}
-                      className="w-24 h-24 rounded-full shadow-lg"
-                    />
-                  </div>
-
-                  {/* Name + Role */}
-                  <h3 className="text-xl font-semibold mt-4">{member.name}</h3>
-                  <p className="text-[#00eaff] text-sm font-medium">
-                    {member.role}
-                  </p>
-
-                  {/* Social icons */}
-                  <div className="flex justify-center gap-4 mt-4 text-gray-300">
-                    {member.linkedin && (
-                      <a
-                        href={member.linkedin}
-                        target="_blank"
-                        className="hover:text-[#00eaff] transition"
-                      >
-                        <Linkedin size={22} />
-                      </a>
-                    )}
-                    {member.instagram && (
-                      <a
-                        href={member.instagram}
-                        target="_blank"
-                        className="hover:text-[#00eaff] transition"
-                      >
-                        <Instagram size={22} />
-                      </a>
-                    )}
-                    {member.github && (
-                      <a
-                        href={member.github}
-                        target="_blank"
-                        className="hover:text-[#00eaff] transition"
-                      >
-                        <Github size={22} />
-                      </a>
-                    )}
-                  </div>
-                </Card>
-              </motion.div>
-            ))}
+      {/* Hero Section */}
+      <section className="relative py-16 px-6 overflow-hidden">
+        {/* Animated grid background */}
+        <div className="absolute inset-0 opacity-5">
+          <div
+            className="absolute inset-0"
+            style={{
+              backgroundImage:
+                `linear-gradient(rgba(255,255,255,0.1) 1px, transparent 1px),
+                 linear-gradient(90deg, rgba(255,255,255,0.1) 1px, transparent 1px)`,
+              backgroundSize: '50px 50px',
+            }}
+          ></div>
         </div>
-      </div>
+
+        {/* Floating orbs */}
+        <div className="absolute top-20 left-20 w-96 h-96 bg-white/5 rounded-full blur-3xl animate-pulse"></div>
+        <div
+          className="absolute bottom-20 right-20 w-80 h-80 bg-white/10 rounded-full blur-3xl animate-pulse"
+          style={{ animationDelay: '2s' }}
+        ></div>
+
+        <div className="max-w-7xl mx-auto relative z-10">
+          <div
+            className={`text-center transition-all duration-1000 ${
+              isVisible ? 'opacity-100 scale-100' : 'opacity-0 scale-95'
+            }`}
+          >
+            <h1 className="text-5xl md:text-6xl lg:text-7xl font-bold text-white mb-4">
+              Our Team
+            </h1>
+            <div className="h-1 w-24 bg-[#434343] mx-auto rounded-full mb-6"></div>
+            <p className="text-gray-400 text-lg md:text-xl max-w-2xl mx-auto">
+              Passionate individuals driving innovation and entrepreneurship
+            </p>
+          </div>
+        </div>
+      </section>
+
+      {/* Faculty Section */}
+      <section className="py-12 px-6">
+        <div className="max-w-7xl mx-auto">
+          <SectionHeader title="Faculty Coordinators" />
+          <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-5 max-w-6xl mx-auto">
+            {teamData.faculty.map((member, index) => (
+              <TeamMemberCard key={member.id} member={member} index={index} />
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* Core Team Section */}
+      <section className="py-12 px-6">
+        <div className="max-w-7xl mx-auto">
+          <SectionHeader title="Core Team" />
+
+          <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-5 max-w-5xl mx-auto mb-6">
+            {teamData.coreTeam.slice(0, 1).map((member, index) => (
+              <div key={member.id} className="sm:col-span-2 md:col-span-3 lg:col-span-4 flex justify-center">
+                <div className="w-full max-w-[280px] sm:max-w-xs">
+                  <TeamMemberCard member={member} index={index} />
+                </div>
+              </div>
+            ))}
+          </div>
+
+          <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-5 max-w-4xl mx-auto mb-6">
+            {teamData.coreTeam.slice(1, 4).map((member, index) => (
+              <div key={member.id} className="flex justify-center">
+                <div className="w-full max-w-[280px] sm:max-w-xs">
+                  <TeamMemberCard member={member} index={index + 1} />
+                </div>
+              </div>
+            ))}
+          </div>
+
+          <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-5 max-w-5xl mx-auto mb-6">
+            {teamData.coreTeam.slice(4, 8).map((member, index) => (
+              <div key={member.id} className="flex justify-center">
+                <div className="w-full max-w-[280px] sm:max-w-xs">
+                  <TeamMemberCard member={member} index={index + 4} />
+                </div>
+              </div>
+            ))}
+          </div>
+
+          {teamData.coreTeam.length > 8 && (
+            <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-5 max-w-5xl mx-auto">
+              {teamData.coreTeam.slice(8, teamData.coreTeam.length).map((member, index) => (
+                <div key={member.id} className="flex justify-center">
+                  <div className="w-full max-w-[280px] sm:max-w-xs">
+                    <TeamMemberCard member={member} index={index + 8} />
+                  </div>
+                </div>
+              ))}
+            </div>
+          )}
+        </div>
+      </section>
     </div>
   );
 }
