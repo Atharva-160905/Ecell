@@ -1,81 +1,129 @@
-import { useState } from "react";
-import { Link, useLocation } from "react-router-dom";
-import { Menu, X } from "lucide-react";
+import React, { useState } from "react";
+import { X } from "lucide-react";
+import logo from "../assets/elogo.png";
+import { NavLink, useLocation, useNavigate } from "react-router-dom";
 
 export default function Navbar() {
+  const [isMenuOpen, setIsMenuOpen] = useState(false);
   const location = useLocation();
-  const [menuOpen, setMenuOpen] = useState(false);
+  const navigate = useNavigate();
 
-  const navItems = [
-    { name: "Home", path: "/" },
-    { name: "Events", path: "/events" },
-    { name: "Team", path: "/team" },
-    { name: "Guests", path: "/guests" },
-    { name: "Faculty", path: "/faculty" },
-    { name: "Contact", path: "/contact" },
+  const menuItems = [
+    { name: "Home", to: "/" },
+    { name: "About", hash: "#about" },
+    { name: "Events", hash: "#events" },
+    { name: "Guests", hash: "#guests" },
+    { name: "Sponsors", hash: "#sponsors" },
+    { name: "Team", to: "/Team" },
+    { name: "Gallery", to: "/Gallery" },
+    { name: "Contact", to: "/Contact" },
   ];
 
+  const closeMenu = () => setIsMenuOpen(false);
+
+  const handleHashClick = (hash) => {
+    if (location.pathname !== "/") {
+      // go to home WITH hash
+      navigate("/" + hash);
+    } else {
+      // already on home → scroll
+      const el = document.querySelector(hash);
+      el?.scrollIntoView({ behavior: "smooth" });
+    }
+    closeMenu();
+  };
+
   return (
-    <div className="fixed top-0 left-0 w-full z-50 bg-black/30 backdrop-blur-xl border-b border-white/10">
-      <div className="max-w-7xl mx-auto flex items-center justify-between py-4 px-6">
-        {/* Logo */}
-        <h1 className="text-2xl font-bold tracking-wide cursor-pointer">
-          <span className="text-[#00eaff]">E</span>-Cell
-        </h1>
+    <>
+      {/* LOGO */}
+      <div className="absolute top-8 left-8 z-40">
+        <NavLink to="/">
+          <img src={logo} alt="Logo" className="h-24 w-auto cursor-pointer" />
+        </NavLink>
+      </div>
 
-        {/* Desktop Menu */}
-        <div className="hidden md:flex gap-8">
-          {navItems.map((item) => {
-            const active = location.pathname === item.path;
-            return (
-              <Link
-                key={item.name}
-                to={item.path}
-                className={`text-sm font-medium transition ${
-                  active
-                    ? "text-[#00eaff]"
-                    : "text-gray-300 hover:text-[#00eaff]"
-                }`}
-              >
-                {item.name}
-              </Link>
-            );
-          })}
-        </div>
-
-        {/* Mobile Hamburger Button */}
+      {/* MENU BUTTON (HAMBURGER ICON) */}
+      <div className="fixed top-8 right-8 z-50">
         <button
-          className="md:hidden text-white"
-          onClick={() => setMenuOpen(!menuOpen)}
+          onClick={() => setIsMenuOpen(!isMenuOpen)}
+          className="flex items-center gap-3 group"
         >
-          {menuOpen ? <X size={28} /> : <Menu size={28} />}
+          <span className="text-white text-sm font-medium">Menu</span>
+
+          {/* THREE HORIZONTAL LINES */}
+          <div className="flex flex-col gap-1.5">
+            <span
+              className={`h-0.5 bg-white transition-all duration-300 ${
+                isMenuOpen ? "w-8 rotate-45 translate-y-2" : "w-8"
+              }`}
+            />
+            <span
+              className={`h-0.5 bg-white transition-all duration-300 ${
+                isMenuOpen ? "opacity-0" : "w-8"
+              }`}
+            />
+            <span
+              className={`h-0.5 bg-white transition-all duration-300 ${
+                isMenuOpen ? "w-8 -rotate-45 -translate-y-2" : "w-8"
+              }`}
+            />
+          </div>
         </button>
       </div>
 
-      {/* Mobile Slide-In Menu */}
-      {menuOpen && (
-        <div className="md:hidden bg-black/90 px-6 py-4 border-t border-white/10">
-          <div className="flex flex-col gap-4">
-            {navItems.map((item) => {
-              const active = location.pathname === item.path;
-              return (
-                <Link
-                  key={item.name}
-                  to={item.path}
-                  className={`text-lg py-1 transition ${
-                    active
-                      ? "text-[#00eaff]"
-                      : "text-gray-300 hover:text-[#00eaff]"
-                  }`}
-                  onClick={() => setMenuOpen(false)}
-                >
-                  {item.name}
-                </Link>
-              );
-            })}
-          </div>
-        </div>
+      {/* OVERLAY */}
+      {isMenuOpen && (
+        <div
+          className="fixed inset-0 bg-black/50 z-40"
+          onClick={closeMenu}
+        />
       )}
-    </div>
+
+      {/* SIDEBAR */}
+      <div
+        className={`fixed top-0 right-0 w-80 h-full z-50 transition-transform duration-300 ${
+          isMenuOpen ? "translate-x-0" : "translate-x-full"
+        }`}
+        style={{
+          background: "linear-gradient(180deg, #1a1a1a 0%, #2d2d2d 100%)",
+        }}
+      >
+        <div className="flex justify-between items-center p-6 border-b border-white/10">
+          <h2 className="text-2xl font-bold text-white">ECell</h2>
+          <button onClick={closeMenu}>
+            <X size={24} className="text-white" />
+          </button>
+        </div>
+
+        <nav className="p-6">
+          {menuItems.map((item, i) =>
+            item.hash ? (
+              <button
+                key={i}
+                onClick={() => handleHashClick(item.hash)}
+                className="block w-full text-left py-3 px-4 rounded-lg text-white hover:bg-white/10"
+              >
+                {item.name}
+              </button>
+            ) : (
+              <NavLink
+                key={i}
+                to={item.to}
+                onClick={closeMenu}
+                className={({ isActive }) =>
+                  `block py-3 px-4 rounded-lg ${
+                    isActive
+                      ? "bg-white/20 text-white"
+                      : "text-white hover:bg-white/10"
+                  }`
+                }
+              >
+                {item.name}
+              </NavLink>
+            )
+          )}
+        </nav>
+      </div>
+    </>
   );
 }
